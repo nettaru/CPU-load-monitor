@@ -1,14 +1,19 @@
 import '../styles/index.css';
-import * as config from './config';
 import Store from './store';
 import Page from './ui/page';
+import API from './api';
+const jsonFeed = require('../static/host-app-data.json');
 
 export function boot () {
   // Create new state store
-  const store = new Store(config);
-  const element = document.getElementById('root');
-  return new Page(store, element);
-  // consume JSON feed and store it in 
+  const store = Store(jsonFeed);
+
+  // Create the UI and append to the document
+  const page = Page(store);
+  document.getElementById('root').append(page);
+
+  // Return the module API
+  return API(store);
 };
 
 boot();

@@ -1,10 +1,24 @@
 import Toggle from './toggle';
+import { createNestedElement } from '../utils';
 
-const headerElement = ```<div id="header">
-  <h1>Apps by Host</h1>
-</div>```;
+const elementDescription = {
+  parent: {
+    tag: 'div',
+    attributes: { id: 'header' }
+  },
+  children: [{
+    tag: 'h1',
+    properties: { textContent: 'Apps by Host' }
+  }, {
+    tag: 'span',
+    attributes: { class: 'user' },
+    properties: { textContent: 'for user averylongemailaddress@companyname.com' }
+  }]
+};
 
 export default function Header(store) {
   const toggleEl = Toggle(store);
-  return document.createElement(headerElement).append(headerEl, toggleEl);
+  const headerEl = createNestedElement(elementDescription);
+  headerEl.append(toggleEl);
+  return headerEl;
 };

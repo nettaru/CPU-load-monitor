@@ -9,9 +9,9 @@
  *    <https://webpack.js.org/configuration/>
  */
 
-const {src, dirs, dest} = require('./gulpfile.js/config/paths');
-const rules = require('./gulpfile.js/config/webpack/rules');
-const plugins = require('./gulpfile.js/config/webpack/plugins');
+const {src, dirs, dest} = require('./webpack/paths');
+const rules = require('./webpack/rules');
+const plugins = require('./webpack/plugins');
 
 module.exports = {
   //  Enables Webpack optimizations for `development` or `production` modes.

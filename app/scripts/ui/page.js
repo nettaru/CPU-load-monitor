@@ -1,18 +1,17 @@
 import Header from './header';
-import HostTopApps from './host-top-apps';
+import AppsContainer from './apps-container';
+import { domElementFromDescription } from '../utils';
 
-const pageElement = '<div id="page"></div>';
-
-const renderHosts = (hosts) => {
-  return hosts.reduce((hostsList, host) => {
-    return [...hostsList, HostTopApps(host)];
-  }, []);
+const elementDescription = {
+  tag: 'div',
+  attributes: { id: 'page' }
 };
 
 export default function Page(store) {
   const headerEl = Header(store);
+  const appsContainerEl = AppsContainer(store);
+  const page = domElementFromDescription(elementDescription);
+  page.append(headerEl, appsContainerEl);
 
-  const hosts = store.getState();
-  const hostsElementsList = renderHosts(hosts);
-  return document.createElement(pageElement).append(headerEl, ...hostsElementsList);
+  return page;
 };

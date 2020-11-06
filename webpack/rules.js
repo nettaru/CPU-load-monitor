@@ -5,8 +5,7 @@
  *  How sources are processed by Webpack.
  */
 
-const {src, dirs} = require('../paths');
-console.log(src);
+const {src, dirs} = require('./paths');
 
 module.exports = [
   //  JavaScript Application Modules
@@ -19,7 +18,7 @@ module.exports = [
   //  - <https://github.com/babel/babel-loader#readme>
   {
     test: /\.js$/,
-    include: dirs.scripts,
+    include: src,
     loader: 'babel-loader',
     options: {
       presets: [
@@ -36,37 +35,19 @@ module.exports = [
     }
   },
 
-  //  ESLint
-  //  ------
-  //
-  //  Run ESLint over application modules to detect issues. Issues are
-  //  reported in the terminal.
-  //
-  //  Reference:
-  //  - <https://github.com/webpack-contrib/eslint-loader#readme>
-  // {
-  //   test: /\.js$/,
-  //   include: dirs.scripts,
-  //   enforce: 'pre',
-  //   loader: 'eslint-loader',
-  //   options: {
-  //     emitError: true,
-  //     emitWarning: true
-  //   }
-  // },
-
   // CSS
   // ---
   //
   {
     test: /\.css$/i,
-    include: src,
+    include: dirs.styles,
     use: ['style-loader', 'css-loader'],
   },
   {
-    test: /\.(json)$/,
+    test: /\.(woff|woff2|eot|ttf|otf|ico)$/,
+    include: dirs.static,
     use: [
       'file-loader',
-    ],
+    ]
   }
 ];

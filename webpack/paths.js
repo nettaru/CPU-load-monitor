@@ -24,5 +24,6 @@ exports.dirs = {
 
   //  Where application modules that require compilation are kept.
   scripts: resolve(exports.src, 'scripts/'),
+  tests: resolve(exports.src, 'tests/'),
   styles: resolve(exports.src, 'styles/')
 };

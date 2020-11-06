@@ -6,7 +6,6 @@
  */
 
 const webpack = require('webpack');
-const {pkg} = require('read-pkg-up').sync();
 const HTML = require('html-webpack-plugin');
 
 module.exports = (env = 'development') =>
@@ -32,8 +31,8 @@ module.exports = (env = 'development') =>
     //  Reference:
     //  - <https://webpack.js.org/plugins/html-webpack-plugin/>
     new HTML({
-      title: pkg.title,
-      description: pkg.description,
+      title: 'Hosts List Code Challenge',
+      description: 'An awesome code challenge project',
       template: 'index.html'
     })
   ].filter(Boolean);
