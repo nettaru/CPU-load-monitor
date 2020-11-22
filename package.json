@@ -4,7 +4,8 @@
   "description": "an awesome challenge project for the new relic interview process",
   "scripts": {
     "start": "webpack serve --open 'Google Chrome'",
-    "test": "jest"
+    "test": "jest",
+    "server": "node server.js"
   },
   "author": "Netta Rutenberg <nettaru@gmail.com>",
   "license": "MIT",
@@ -19,11 +20,14 @@
     "style-loader": "^2.0.0",
     "webpack": "^5.4.0",
     "webpack-cli": "^4.2.0",
+    "webpack-dev-middleware": "^4.0.2",
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
-    "core-js": "^2.0.0"
+    "core-js": "^2.0.0",
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0"
   }
 }

@@ -33,6 +33,7 @@ module.exports = {
       //   '[name]-[chunkhash].bundle.js' :
         '[name].bundle.js',
     path: dest,
+    publicPath: '/'
   },
 
   //  Controls how Webpack looks up for modules on the project.
