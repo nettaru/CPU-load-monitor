@@ -1,4 +1,3 @@
-import Toggle from './toggle';
 import { createNestedElement } from '../utils';
 
 const elementDescription = {
@@ -17,8 +16,6 @@ const elementDescription = {
 };
 
 export default function Header(store) {
-  const toggleEl = Toggle(store);
   const headerEl = createNestedElement(elementDescription);
-  headerEl.append(toggleEl);
   return headerEl;
 };

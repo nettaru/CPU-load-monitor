@@ -48,10 +48,6 @@ module.exports = {
     }
   },
 
-  devServer: {
-    contentBase: dest,
-  },
-
   //  How source files are processed by Webpack. The rules configuration was
   //  split into its own `rules.js` module.
   module: {

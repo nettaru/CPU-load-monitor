@@ -1,9 +1,9 @@
 import { ACTION_TYPES } from './config';
-import FeedProcessor from './feed-processor';
 
-/**
- * Returns a deep copy of the input
-**/
+function processData (currentAvarageLoad, state) {
+  state.currentAvarageLoad = currentAvarageLoad;
+}
+// Returns a deep copy of the input object
 function copy (state) {
   if (state.constructor.name == 'Set') {
     return new Set(state);
@@ -20,44 +20,27 @@ function copy (state) {
 
 /**
  * Store manages the module state, in a redux-y manner.
- * Receives and proccessed a feed on creation,
- * returns getState, dispatch & subscribe API
+ * Returns getState, dispatch & subscribe API
 **/
-export default function Store(jsonFeed) {
+export default function Store() {
   const subscribtions = {};
-  const { hosts, apps } = FeedProcessor(jsonFeed);
-  let state = {
-    apps,
-    hosts,
-    showList: false
+  const state = {
+    currentAvarageLoad: 0,
+    avarageLoad10MinWindow: [],
+    heavyCPULoadCounter: 0
   };
   return {
     getState: () => {
       return copy(state);
     },
-    dispatch: ({type, payload}) => {
-      const { hosts, apps } = state;
+    dispatch: data => {
+      if (!data) return;
+      const { type, payload } = data;
       switch (type) {
-        case ACTION_TYPES.TOGGLE_CHANGE:
-          state.showList = payload;
-          break;
-        case ACTION_TYPES.ADD_APP_TO_HOSTS:
-          const appToAdd = apps[payload.appName];
-          if (!appToAdd) { return; }
-          payload.hostsNamesList.forEach(hostName => {
-            const host = hosts[hostName];
-            host.addApplication(appToAdd.name, appToAdd.apdex);
-          });
-          state.hosts = hosts;
-          break;
-        case ACTION_TYPES.REMOVE_APP_FROM_HOSTS:
-          const appToRemove = apps[payload.appName];
-          if (!appToRemove) { return; }
-          payload.hostsNamesList.forEach(hostName => {
-            const host = hosts[hostName];
-            host.removeApplication(appToRemove.name, appToRemove.apdex);
-          });
-          state.hosts = hosts;
+        case ACTION_TYPES.NEW_LOAD_DATA:
+          const currentAvarageLoad = Number(payload);
+          console.log(currentAvarageLoad);
+          processData(currentAvarageLoad, state);
           break;
         default:
           return;
