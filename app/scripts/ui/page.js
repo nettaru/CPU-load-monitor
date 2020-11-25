@@ -1,15 +1,24 @@
-import Header from './header';
-import { domElementFromDescription } from '../utils';
+import UIModel from './model';
+import { domElementFromDescription } from './utils';
+import CurrentAvarageCPULoad from './current-avarage-cpu-load';
+import LoadTimeWindow from './load-time-window';
 
-const elementDescription = {
-  tag: 'div',
-  attributes: { id: 'page' }
-};
+export default class Page extends UIModel {
+  constructor (store) {
+    super('page');
+    this.cpuAvarageLoad = new CurrentAvarageCPULoad(store);
+    this.loadTimeWindow = new LoadTimeWindow(store);
+  }
 
-export default function Page(store) {
-  const headerEl = Header(store);
-  const page = domElementFromDescription(elementDescription);
-  page.append(headerEl);
-
-  return page;
+  renderChildren () {
+    return [
+      domElementFromDescription({
+        tag: 'h1',
+        attributes: { id: 'header' },
+        properties: { textContent: 'Avarage CPU Load Dashboard' }
+      }),
+      this.cpuAvarageLoad.render(),
+      this.loadTimeWindow.render()
+    ]
+  }
 };

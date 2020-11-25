@@ -25,11 +25,7 @@ export function domElementFromDescription ({tag, attributes = {}, properties = {
  */
 export function createNestedElement (structure) {
   if (!structure) return null;
-  const {parent, children = []} = structure;
-  const parentElement = domElementFromDescription(parent);
-  const childrenElements = children.map(child => {
-    return domElementFromDescription(child);
-  });
-  parentElement.append(...childrenElements);
+  const parentElement = domElementFromDescription(structure);
+  parentElement.append(...structure.children);
   return parentElement;
 };

@@ -11,8 +11,8 @@ export function boot () {
   SocketManager(store);
 
   // Create the UI and append to the document
-  // const page = Page(store);
-  // document.getElementById('root').append(page);
+  const page = new Page(store);
+  document.getElementById('root').append(page.render());
 };
 
 boot();
