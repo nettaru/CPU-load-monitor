@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "an awesome challenge project for the new relic interview process",
   "scripts": {
-    "start": "webpack serve --open 'Google Chrome'",
     "test": "jest",
-    "server": "node server.js"
+    "start": "node server.js"
   },
   "author": "Netta Rutenberg <nettaru@gmail.com>",
   "license": "MIT",

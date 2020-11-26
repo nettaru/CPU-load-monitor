@@ -30,17 +30,16 @@ export default class LoadTimeWindow extends UIModel {
     const height = 500, width = 500;
     const margin = {top: 20, right: 20, bottom: 30, left: 30};
     const store = this.store;
-    const data = store.getState().avarageLoad10MinWindow;
-    const x = d3.scaleTime()
-      .domain(d3.extent(data, d => d.time))
-      .range([margin.left, width - margin.right]);
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.value)]).nice()
-      .range([height - margin.bottom, margin.top]);
     const xAxis = (g, x) => g
       .attr('transform', `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
-      .text('Time →');
+      .call(g => g.append("text")
+        .attr("x", margin.right)
+        .attr("y", margin.bottom - 4)
+        .attr("fill", "currentColor")
+        .attr("text-anchor", "end")
+        .text('Time →'));
+
     const yAxis = (g, y) => g
       .attr('transform', `translate(${margin.left},0)`)
       .call(d3.axisLeft(y).ticks(null, 's'))
@@ -53,11 +52,8 @@ export default class LoadTimeWindow extends UIModel {
     const svg = d3.create('svg')
       .attr('viewBox', [0, 0, width, height]);
     const delay = 750;
-    svg.append('g')
-        .call(xAxis, x);
-  
-    svg.append('g')
-        .call(yAxis, y);
+    const xAxisGroup = svg.append('g');
+    const yAxisGroup = svg.append('g');
   
     let group = svg.append('g');
   
@@ -66,6 +62,12 @@ export default class LoadTimeWindow extends UIModel {
     return Object.assign(svg.node(), {
       update() {
         const data = store.getState().avarageLoad10MinWindow;
+        const x = d3.scaleTime()
+          .domain([data[0].time, data[data.length - 1].time])
+          .range([margin.left, width - margin.right]);
+        const y = d3.scaleLinear()
+          .domain([0, d3.max(data, d => d.value)]).nice()
+          .range([height - margin.bottom, margin.top]);
         const t = svg.transition()
           .duration(delay);
   
@@ -79,7 +81,10 @@ export default class LoadTimeWindow extends UIModel {
               .attr('y', d => y(0))
               .attr('width', width/data.length)
               .attr('height', 0),
-            update => update,
+            update => update.call(update => update.transition(t)
+              .attr('width', width/data.length)
+              .attr('x', d => x(d.time))
+              .attr('y', d => y(0))),
             exit => exit.call(rect => rect.transition(t).remove()
               .attr('y', y(0))
               .attr('height', 0))
@@ -92,8 +97,8 @@ export default class LoadTimeWindow extends UIModel {
         group.transition(t)
           .attr('transform', 'translate(0,0)');
 
-        svg.selectAll('g.y.axis')
-          .call(yAxis);
+        xAxisGroup.call(xAxis, x);
+        yAxisGroup.call(yAxis, y);
       }
     });
     }
