@@ -1,37 +1,43 @@
-# Hosts-List-Code-Challenge
+# Info-Cat - CPU load monitor
 Implementation of a technical code challenge.
 
 ## The task
-Build a new page view that shows the list of applications running on every host.
-* An application has a name, a list of contributors, a release version number, and a list of hosts that the app has been deployed at.
-* Each application has an Apdex metric assigned. The Apdex score is a positive integer between 0 and 100. Apdex measures users' satisfaction based on the response time of web applications and services.
+Build a a browser-based CPU load monitoring application. This application will display time-series data.
+A user should be able to view your application to answer the following questions about their computer:
 
-**Input:** A JSON feed is used as the page input, and is loaded as a static file on page creation.
+- What is my computer's current average CPU load?
+- How did the average CPU load change over a 10 minute window?
+- Has my computer been under heavy CPU load for 2 minutes or more? When? How many times?
+- Has my computer recovered from heavy CPU load? When? How many times?
 
-**Layout:** The page has 2 page view modes - grid & list layouts. Each app item is clickable, and opens an alert with the applicaiton version number.
+## Product requirements:
 
-**API:** The page module return an API with the following methods:
-1. _getTopAppsByHost_ - Retrieves a list of the 25 most satisfying applications for a hostname.
-2. _addAppToHosts_ - Adds an application for all hosts in list.
-3. _removeAppFromHosts_ - Removes an application for all hosts in list.
-
-No JS/CSS frameworks are allowed :)
-
+- The front-end application should communicate with a local back-end service to retrieve CPU load average information from your computer (see below).
+- The front-end application should retrieve CPU load information every 10 seconds.
+- The front-end application should maintain a 10 minute window of historical CPU load information.
+- The front-end application should alert the user to high CPU load.
+- The front-end application should alert the user when CPU load has recovered.
 
 ## Implementation
 **Architecture**
 
-State is managed by the module store, includes maps of hosts-by-name and apps-by-name, and the current UI view mode.
+State is managed by the module store. The state consists of the following:
+1. _avarageLoad10MinWindow_ - Events array of the past 10 minutes. Each event consists of its time and avarage CPU load value.
+2. _currentAvarageLoad_ - Numeric value of the latest avarage CPU load.
+3. _cpuLoadEvent_ - Array containing High CPU load events. Each event consists of its start & end time, and type - either high load or recovery.
+
+
 The store has the following API:
 1. _getState_ - Returns a copy of current module state.
-2. _dispatch_ - Get a change type and payload, and changes the state accordingly.
-1. _subscribe_ - Allow subscribing to state changes, returns an unsubscribe method.
+2. _dispatch_ - Dispatches a change type and payload, and changes the state accordingly.
+1. _subscribe_ - Allows subscribing to state changes, returns an unsubscribe method.
 
-In the state, Hosts maintain the _applicationByIndex_ map, that holds the host-to-apps relation.
-The object keys are the _apdex_ grades, and the entries are app-names Sets.
-This way, the apps are sorted by index while being added, and there is no need to re-sort the topApps list when an app is added or removed to a host.
-Accessing (_Set.has_), adding (_Set.add_) or removing (_Set.delete_) an app from a host is achieved in O(1) complexity (on avarage).
-The apps are store by name on the host (and not by reference) so that no state manipulation could be done from outside of the store.
+
+The state is displayed by 3 UI components:
+- _CPUAvarageLoad_ - displays current avarage as it is kept in the state.
+- _CPULoadEventsInfo_ - displays counts of high CPU load & recovery events.
+- _LoadTimeWindow_ - displays an SVG graph of the avarage load changes in the past 10 minutes. The graph is colored according to events. When rendered or updated, we iterate for each data point through the CPU load events, and color the relevant time slot accordingly. The iteration through the events is kept under O(1), since we have at most 4 CPU load events.
+
 
 **UI**
 
@@ -39,12 +45,12 @@ Page is built with the following components:
 ```
 Page
   Header
-    View Toggle
-  Apps-Container
-    Host-Top-Apps
-      List-Item
+  Info-Row
+    CPU-Avarage-Load
+    CPU-Load-Events-Info
+  Info-Row
+    Load-Time-Window
 ```
-The View Toggle changes the show-list mode.
 
 **Stack**
 
@@ -52,7 +58,7 @@ Babel+Webpack for compiling and serving the page.
 Jest for testing.
     
 
-Run `yarn serve` in order to have the test running and open in chrome.
+Run `yarn start` in order start the express server. Load `http://localhost:3000/` for the page.
 
 Run `yarn test` in order to run the jest tests.
 
