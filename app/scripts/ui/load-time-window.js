@@ -1,6 +1,6 @@
 import { ACTION_TYPES } from '../config';
 import UIModel from './model';
-import { domElementFromDescription } from './utils'
+import { domElementFromDescription, getLast } from '../utils'
 import * as d3 from 'd3';
 
 export default class LoadTimeWindow extends UIModel {
@@ -71,7 +71,7 @@ export default class LoadTimeWindow extends UIModel {
         const x = d3.scaleTime()
           .domain([
             avarageLoad10MinWindow[0].time,
-            avarageLoad10MinWindow[avarageLoad10MinWindow.length - 1].time + 10000]
+            getLast(avarageLoad10MinWindow).time + 10000]
           )
           .range([margin.left, width - margin.right]);
         const y = d3.scaleLinear()
@@ -94,7 +94,7 @@ export default class LoadTimeWindow extends UIModel {
           }
         };
   
-        const updatedWidth = Math.ceil((width - margin.right - margin.left)/avarageLoad10MinWindow.length);
+        const updatedWidth = Math.floor((width - margin.right - margin.left)/avarageLoad10MinWindow.length*0.92);
         rect = rect
           .data(avarageLoad10MinWindow)
           .join(

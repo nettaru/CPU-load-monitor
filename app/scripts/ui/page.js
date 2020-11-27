@@ -1,5 +1,5 @@
 import UIModel from './model';
-import { domElementFromDescription, createNestedElement } from './utils';
+import { domElementFromDescription, createNestedElement } from '../utils';
 import CurrentAvarageCPULoad from './current-avarage-cpu-load';
 import LoadTimeWindow from './load-time-window';
 import CPULoadEventsInfo from './cpu-load-events-info';

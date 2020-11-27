@@ -1,7 +1,8 @@
 import { ACTION_TYPES } from './config';
+import { getLast } from './utils';
 
 function getLatestEventLength (events) {
-  const latestEvent = events[events.length - 1];
+  const latestEvent = getLast(events);
   return latestEvent ? (latestEvent.end - latestEvent.start)/60000 : 0;
 }
 

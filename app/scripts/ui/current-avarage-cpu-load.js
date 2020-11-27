@@ -1,6 +1,6 @@
 import { ACTION_TYPES } from '../config';
 import UIModel from './model';
-import { domElementFromDescription } from './utils'
+import { domElementFromDescription } from '../utils'
 
 class CurrentAvarageCPULoadData extends UIModel {
   constructor (store) {

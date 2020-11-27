@@ -54,7 +54,7 @@ describe('domElementFromDescription', () => {
 });
 
 describe('createNestedElement', () => {
-  it('Creates an HTML element that can have many child-less children', () => {
+  it('Creates an HTML element that can have many children', () => {
     const id1 = 'firstKid';
     const id2 = 'secondKid';
     const id3 = 'thirdKid';
@@ -63,9 +63,9 @@ describe('createNestedElement', () => {
         tag: 'div'
       },
       children: [
-        { tag: 'div', attributes: { id: id1 } },
-        { tag: 'div', attributes: { id: id2 } },
-        { tag: 'div', attributes: { id: id3 } }
+        domElementFromDescription({ attributes: { id: id1 } }),
+        domElementFromDescription({ attributes: { id: id2 } }),
+        domElementFromDescription({ attributes: { id: id3 } })
       ]
     };
 

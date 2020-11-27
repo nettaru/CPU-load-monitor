@@ -1,4 +1,4 @@
-import { createNestedElement } from './utils.js';
+import { createNestedElement } from '../utils';
 
 /**
 * One UIModel to rule them all!

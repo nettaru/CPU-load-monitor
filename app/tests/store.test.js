@@ -6,15 +6,15 @@ describe('Store', () => {
   const store = Store(feed);
   it('Returns current state', () => {
     const state = store.getState();
-    expect(state.hasOwnProperty('showList')).toBe(true);
-    expect(state.hasOwnProperty('apps')).toBe(true);
-    expect(state.hasOwnProperty('hosts')).toBe(true);
+    expect(state.hasOwnProperty('currentAvarageLoad')).toBe(true);
+    expect(state.hasOwnProperty('avarageLoad10MinWindow')).toBe(true);
+    expect(state.hasOwnProperty('cpuLoadEvents')).toBe(true);
   });
 
   it('Allows mutating state through dispatching events', () => {
-    expect(store.getState().showList).toBe(false);
-    store.dispatch({ type: ACTION_TYPES.TOGGLE_CHANGE, payload: true });
-    expect(store.getState().showList).toBe(true);
+    expect(store.getState().currentAvarageLoad).toBe(0);
+    store.dispatch({ type: ACTION_TYPES.NEW_LOAD_DATA, payload: 1 });
+    expect(store.getState().currentAvarageLoad).toBe(1);
   });
 
   it('Allows subscribing to state change', () => {
@@ -22,7 +22,7 @@ describe('Store', () => {
     const changedValue = 'state has change!';
     const subscriber = () => { changeMe = changedValue; }
     store.subscribe(subscriber);
-    store.dispatch({ type: ACTION_TYPES.TOGGLE_CHANGE, payload: true });
+    store.dispatch({ type: ACTION_TYPES.NEW_LOAD_DATA, payload: 1 });
     expect(changeMe).toEqual(changedValue);
   });
 });
