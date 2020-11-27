@@ -10,7 +10,7 @@ class HighCPULoadCounter extends UIModel {
 
     store.subscribe(eventTypes => {
       if (eventTypes.includes(ACTION_TYPES.HIGH_CPU_LOAD)) {
-        const eventsCount = store.getState().highCouLoad.events.length;
+        const eventsCount = store.getState().highCPULoad.events.length;
         this.properties.textContent = `Events: ${eventsCount}`;
         this.replaceElement();
       }
