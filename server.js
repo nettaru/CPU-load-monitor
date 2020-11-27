@@ -1,5 +1,6 @@
 const path = require('path');
 const os = require('os');
+require('loadavg-windows');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const config = require('./webpack.config.js');
