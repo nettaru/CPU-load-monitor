@@ -52,6 +52,16 @@ Page
     Load-Time-Window
 ```
 
+**Future Application Improvements**
+There are definitely some improvements that can be done for a production version:
+- WebSocket is using ws protocol which is not secure. Production version requires an SSL certificate to use wss protocol for the socket.
+- The chart can display a tooltip with values on hover, which will make it easier to see the accurate value.
+- More testing - using e2e tests or purhaps jest snapshots, to make sure the UI doesn't break on changes.
+- Store state can use models in case of a more complicated data structure.
+- Store can use state reducers when maintaining a more complicated state.
+- Production stack should also minify the files.
+
+
 **Stack**
 
 Babel+Webpack for compiling and serving the page.
