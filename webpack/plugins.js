@@ -6,6 +6,7 @@
  */
 
 const HTML = require('html-webpack-plugin');
+const {dirs} = require('./paths');
 
 module.exports = (env = 'development') =>
   [
@@ -17,9 +18,10 @@ module.exports = (env = 'development') =>
     //  Reference:
     //  - <https://webpack.js.org/plugins/html-webpack-plugin/>
     new HTML({
-      title: 'Load Monitoring Web App',
-      description: 'An awesome code challenge project',
+      title: 'InfoCat',
+      description: 'Load Monitoring Web App',
       template: 'index.html',
-      filename: './index.html'
+      filename: './index.html',
+      favicon: `${dirs.static}/favicon.png`
     })
   ].filter(Boolean);

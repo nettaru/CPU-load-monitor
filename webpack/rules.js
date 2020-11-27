@@ -44,7 +44,7 @@ module.exports = [
     use: ['style-loader', 'css-loader'],
   },
   {
-    test: /\.(woff|woff2|eot|ttf|otf|ico)$/,
+    test: /\.(woff|woff2|eot|ttf|otf|png)$/,
     include: dirs.static,
     use: [
       'file-loader',
