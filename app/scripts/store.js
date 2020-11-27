@@ -5,27 +5,49 @@ function getNextState (currentAvarageLoad, state) {
   // Add current avarage data with time, remove first element of window to maintain
   // data for the past 10 minutes.
   const avarageLoad10MinWindow = [...state.avarageLoad10MinWindow, { time: now, value: currentAvarageLoad }];
-  // We sample the load data every 10 seconds, and therefore will have 60 samples
-  // in a 10 minutes period
-  if (avarageLoad10MinWindow.length > 60) {
+
+  // Check if we maintain data for longer than 10 minutes, and if so - remove the first data entry
+  if ((avarageLoad10MinWindow[avarageLoad10MinWindow.length - 1].time - avarageLoad10MinWindow[0].time)/(10*60*1000) > 10) {
     avarageLoad10MinWindow.shift();
   }
 
   // Update high CPU load
   const highCPULoad = {
     events: [...state.highCPULoad.events],
-    start: state.highCPULoad.start
+    start: state.highCPULoad.start,
+    end: null
   };
 
+  const isOngoingHighLoadEvent = highCPULoad.start && ((now - highCPULoad.start)/60000 >= 2);
   if (currentAvarageLoad > 1) {
-    // No high load events yet
+    // If no ongoing high CPU load event - let's mark a start:
     if (!highCPULoad.start) {
       highCPULoad.start = now;
     }
-  } else if (highCPULoad.start && ((highCPULoad.start - now)/12000 >= 2)) {
-    // Update back-to-normal load
-    highCPULoad.events.push({ start: highCPULoad.start, end: now });
+    // If we have an ongoing high load event -
+    // Either update the event still ongoing, or log the new event
+    if (isOngoingHighLoadEvent) {
+      const lastEvent = highCPULoad.events[highCPULoad.events.length - 1];
+      if (lastEvent && lastEvent.start == highCPULoad.start) {
+        lastEvent.end = now;
+      } else {
+        highCPULoad.events.push({ start: highCPULoad.start, end: now });
+      }
+    }
+  } else {
+    // If we had an event, it has now ended, and we log its end time
+    if (isOngoingHighLoadEvent) {
+      highCPULoad.end = now;
+    }
     highCPULoad.start = null;
+  }
+
+  // Remove first high CPU load event if it is already out of the documented time window
+  if (highCPULoad.events.length > 0 && avarageLoad10MinWindow[0].time > highCPULoad.events[0].start) {
+    highCPULoad.events[0].start = avarageLoad10MinWindow[0].time;
+    if (highCPULoad.events[0].end < highCPULoad.events[0].start) {
+      highCPULoad.events.shift();
+    }
   }
 
   return {
@@ -62,9 +84,13 @@ export default function Store() {
         case ACTION_TYPES.NEW_LOAD_DATA:
           const currentAvarageLoad = Number(payload);
           const nextState = getNextState(currentAvarageLoad, state);
-          if (!state.highCPULoad.start && nextState.highCPULoad.start) {
+
+          const isHighCPUEvent = nextState.highCPULoad.events.length > state.highCPULoad.events.length;
+          const didHighCPUEventEnd = nextState.highCPULoad.end;
+
+          if (isHighCPUEvent) {
             notifyEvents.push(ACTION_TYPES.HIGH_CPU_LOAD);
-          } else if (nextState.highCPULoad.events.length > state.highCPULoad.events.length) {
+          } else if (didHighCPUEventEnd) {
             notifyEvents.push(ACTION_TYPES.NORMAL_CPU_LOAD);
           }
           state = nextState;

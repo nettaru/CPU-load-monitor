@@ -2,7 +2,7 @@
  * Returns a flat DOM element from a description
  * @param {object} DOM element description 
  */
-export function domElementFromDescription ({tag, attributes = {}, properties = {}, listeners = {}}) {
+export function domElementFromDescription ({tag = 'div', attributes = {}, properties = {}, listeners = {}}) {
   const element = document.createElement(tag);
   Object.keys(attributes).forEach(attr => {
     element.setAttribute(attr, attributes[attr]);

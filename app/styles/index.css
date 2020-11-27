@@ -29,79 +29,36 @@ body {
 
 h1 {
   font-size: 35px;
-  font-family: 'HelveticaNeueBold';
+  margin: 0 0 30px;
+  text-align: center;
+}
+
+.board-block {
+  padding: 20px;
+  text-align: center;
   display: inline-block;
-  margin: 0 10px 0 0;
+  border: 1px solid #4a4a4a;
+  border-radius: 5px;
+  margin: 20px;
 }
 
-.user {
-  font-size: 18px;
-  margin-right: 30px;
+.info-row {
+  display: flex;
+  justify-content: center;
 }
 
-h3 {
-  margin: 0 0 23px;
+.headline--emphasized {
+  font-size: 30px;
   font-family: 'HelveticaNeueBold';
 }
 
 ul {
   padding: 0;
 }
-
-.host-top-apps {
-  background: #fff;
-  padding: 30px;
-  font-size: 16px;
-  margin: 0 30px 30px 0;
-  box-sizing: border-box;
-  flex-basis: 375px;
-  min-width: 375px;
-}
-
-.grid-view {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.list-item {
-  color: #4a4a4a;
-  list-style-type: none;
-  display: table;
-  cursor: pointer;
-}
-
-#toggle {
-  display: inline-block;
-  position: relative;
-}
-
-input {
-  margin: 0;
-  height: 20px;
-  width: 20px;
-  position: absolute;
-  left: 0;
-  top: -2px;
-  cursor: pointer;
-}
-
-label {
-  margin-left: 25px;
-  cursor: pointer;
-}
-
 #page {
   padding: 30px;
 }
 
 #header {
   margin-bottom: 30px; 
-}
-
-.apdex {
-  opacity: 62%;
-  font-size: 13px;
-  display: table-cell;
-  width: 22px;
-  padding-right: 20px;
 }

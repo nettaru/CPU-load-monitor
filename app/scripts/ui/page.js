@@ -1,13 +1,14 @@
 import UIModel from './model';
-import { domElementFromDescription } from './utils';
+import { domElementFromDescription, createNestedElement } from './utils';
 import CurrentAvarageCPULoad from './current-avarage-cpu-load';
 import LoadTimeWindow from './load-time-window';
-
+import HighCPULoadInfo from './high-cpu-load-info';
 export default class Page extends UIModel {
   constructor (store) {
     super('page');
     this.cpuAvarageLoad = new CurrentAvarageCPULoad(store);
     this.loadTimeWindow = new LoadTimeWindow(store);
+    this.highCPULoadInfo = new HighCPULoadInfo(store);
   }
 
   renderChildren () {
@@ -17,8 +18,19 @@ export default class Page extends UIModel {
         attributes: { id: 'header' },
         properties: { textContent: 'Avarage CPU Load Dashboard' }
       }),
-      this.cpuAvarageLoad.render(),
-      this.loadTimeWindow.render()
+      createNestedElement({
+        attributes: { class: 'info-row' },
+        children: [
+          this.cpuAvarageLoad.render(),
+          this.highCPULoadInfo.render(),
+        ]
+      }),
+      createNestedElement({
+        attributes: { class: 'info-row' },
+        children: [
+          this.loadTimeWindow.render()
+        ]
+      })
     ]
   }
 };

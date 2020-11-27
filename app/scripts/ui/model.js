@@ -35,6 +35,7 @@ export default class UIModel {
     if (!oldElement) return;
     const newElement = this.render(data);
     oldElement.parentNode.replaceChild(newElement, oldElement);
+    this.element = newElement;
   }
 
 
