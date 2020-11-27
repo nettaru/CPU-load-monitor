@@ -1,12 +1,21 @@
 import { ACTION_TYPES } from './config';
+import { getLast } from './utils';
 
 function isOngoingTrend(latestTrend, now, trendType) {
   return (now - latestTrend.start)/60000 >= 2 && latestTrend.type == trendType;
 }
 
 function updateCPULoadEvents(cpuLoadEvents, type, now) {
-    // If no ongoing load event - let's mark a trend start:
-    if (cpuLoadEvents.latestTrend.type !== type) {
+  const lastEvent = getLast(cpuLoadEvents.events);
+
+  // Recovery can only happen after a high CPU load event.
+  // If this is the first event, or the latest event was a recovery, we do not need to log
+  // the events list
+  if (type === ACTION_TYPES.RECOVERY && (!lastEvent || lastEvent.type === ACTION_TYPES.RECOVERY)) {
+    return;
+  }
+  // If no ongoing load event - let's mark a trend start:
+  if (cpuLoadEvents.latestTrend.type !== type) {
     cpuLoadEvents.latestTrend = { start: now, type };
   }
 
@@ -14,7 +23,6 @@ function updateCPULoadEvents(cpuLoadEvents, type, now) {
   // If we have an ongoing high load event -
   // Either update the event still ongoing, or log the new event
   if (isOngoingEvent) {
-    const lastEvent = cpuLoadEvents.events[cpuLoadEvents.events.length - 1];
     if (lastEvent && lastEvent.start == cpuLoadEvents.latestTrend.start) {
       lastEvent.end = now;
     } else {
@@ -30,7 +38,7 @@ function getNextState (currentAvarageLoad, state) {
   const avarageLoad10MinWindow = [...state.avarageLoad10MinWindow, { time: now, value: currentAvarageLoad }];
 
   // Check if we maintain data for longer than 10 minutes, and if so - remove the first data entry
-  if ((avarageLoad10MinWindow[avarageLoad10MinWindow.length - 1].time - avarageLoad10MinWindow[0].time)/(10*60*1000) > 10) {
+  if ((getLast(avarageLoad10MinWindow).time - avarageLoad10MinWindow[0].time)/(10*60*1000) > 10) {
     avarageLoad10MinWindow.shift();
   }
 
@@ -51,7 +59,6 @@ function getNextState (currentAvarageLoad, state) {
   }
 
   return {
-    // Update current avarage load
     currentAvarageLoad,
     avarageLoad10MinWindow,
     cpuLoadEvents
@@ -87,7 +94,7 @@ export default function Store() {
 
           const isNewLoadEvent = nextState.cpuLoadEvents.events.length > state.cpuLoadEvents.events.length;
           if (isNewLoadEvent) {
-            notifyEvents.push(nextState.cpuLoadEvents.events[nextState.cpuLoadEvents.events.length - 1].type);
+            notifyEvents.push(getLast(nextState.cpuLoadEvents.events).type);
           }
 
           state = nextState;
