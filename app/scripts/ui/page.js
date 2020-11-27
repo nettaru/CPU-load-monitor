@@ -2,13 +2,13 @@ import UIModel from './model';
 import { domElementFromDescription, createNestedElement } from './utils';
 import CurrentAvarageCPULoad from './current-avarage-cpu-load';
 import LoadTimeWindow from './load-time-window';
-import HighCPULoadInfo from './high-cpu-load-info';
+import CPULoadEventsInfo from './cpu-load-events-info';
 export default class Page extends UIModel {
   constructor (store) {
     super('page');
     this.cpuAvarageLoad = new CurrentAvarageCPULoad(store);
     this.loadTimeWindow = new LoadTimeWindow(store);
-    this.highCPULoadInfo = new HighCPULoadInfo(store);
+    this.cpuLoadEventsInfo = new CPULoadEventsInfo(store);
   }
 
   renderChildren () {
@@ -22,7 +22,7 @@ export default class Page extends UIModel {
         attributes: { class: 'info-row' },
         children: [
           this.cpuAvarageLoad.render(),
-          this.highCPULoadInfo.render(),
+          this.cpuLoadEventsInfo.render(),
         ]
       }),
       createNestedElement({

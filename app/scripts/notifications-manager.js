@@ -27,12 +27,12 @@ export default function NotificationsManager (store) {
   }
 
   store.subscribe(eventTypes => {
-    const highCPULoad = store.getState().highCPULoad;
+    const cpuLoadEvents = store.getState().cpuLoadEvents;
 
     if (eventTypes.includes(ACTION_TYPES.HIGH_CPU_LOAD)) {
-      notify('High CPU Load!', `Started ${getLatestEventLength(highCPULoad.events)} minutes ago`);
+      notify('High CPU Load!', `Started ${getLatestEventLength(cpuLoadEvents.events)} minutes ago`);
     } else if (eventTypes.includes(ACTION_TYPES.NORMAL_CPU_LOAD)) {
-      notify('CPU Load Recovered', `Event length was: ${getLatestEventLength(highCPULoad.events)} minutes`);
+      notify('CPU Load Recovered', `Event length was: ${getLatestEventLength(cpuLoadEvents.events)} minutes`);
     }
   });
 };

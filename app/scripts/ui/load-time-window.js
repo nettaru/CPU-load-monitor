@@ -67,7 +67,7 @@ export default class LoadTimeWindow extends UIModel {
   
     return Object.assign(svg.node(), {
       update() {
-        const { avarageLoad10MinWindow, highCPULoad } = store.getState();
+        const { avarageLoad10MinWindow, cpuLoadEvents } = store.getState();
         const x = d3.scaleTime()
           .domain([
             avarageLoad10MinWindow[0].time,
@@ -83,8 +83,15 @@ export default class LoadTimeWindow extends UIModel {
         // We have at most 4 high CPU load events at the past 10 minutes,
         // so going through all of them is not costly:
         const coloring = time => {
-          const event = highCPULoad.events.find(event => time >= event.start && time <= event.end);
-          return event ? 'red' : '#632ca6';
+          const event = cpuLoadEvents.events.find(event => time >= event.start && time <= event.end) || {};
+          switch (event.type) {
+            case ACTION_TYPES.HIGH_CPU_LOAD:
+              return 'red';
+            case ACTION_TYPES.RECOVERY:
+              return 'green';
+            default:
+              return '#632ca6';
+          }
         };
   
         const updatedWidth = Math.ceil((width - margin.right - margin.left)/avarageLoad10MinWindow.length);

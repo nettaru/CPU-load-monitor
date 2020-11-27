@@ -7,11 +7,12 @@ class HighCPULoadCounter extends UIModel {
     super('high-cpu-load-counter', 'h3');
     this.attributes.class = 'headline--emphasized';
     this.properties = { textContent: `Events: 0` };
+    this.eventsCount = 0;
 
     store.subscribe(eventTypes => {
       if (eventTypes.includes(ACTION_TYPES.HIGH_CPU_LOAD)) {
-        const eventsCount = store.getState().highCPULoad.events.length;
-        this.properties.textContent = `Events: ${eventsCount}`;
+        this.eventsCount++;
+        this.properties.textContent = `Events: ${this.eventsCount}`;
         this.replaceElement();
       }
     });  
@@ -23,17 +24,18 @@ class RecoveriesCounter extends UIModel {
     super('recovery-counter', 'h3');
     this.attributes.class = 'headline--emphasized';
     this.properties = { textContent: `Recoveries: 0` };
+    this.eventsCount = 0;
 
     store.subscribe(eventTypes => {
-      if (eventTypes.includes(ACTION_TYPES.NORMAL_CPU_LOAD)) {
-        const eventsCount = store.getState().highCPULoad.events.length;
-        this.properties.textContent = `Recoveries: ${eventsCount}`;
+      this.eventsCount++;
+      if (eventTypes.includes(ACTION_TYPES.RECOVERY)) {
+        this.properties.textContent = `Recoveries: ${this.eventsCount}`;
         this.replaceElement();
       }
     });  
   }
 }
-export default class HighCPULoadInfo extends UIModel {
+export default class CPULoadEventsInfo extends UIModel {
   constructor (store) {
     super('high-cpu-load-info');
     this.attributes.class = 'board-block';
