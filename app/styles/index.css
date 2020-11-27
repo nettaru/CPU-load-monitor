@@ -62,3 +62,10 @@ ul {
 #header {
   margin-bottom: 30px; 
 }
+
+#avarage-cpu-load, #high-cpu-load-info {
+  background: var(--main-color);
+  box-sizing: border-box;
+  color: white;
+  width: 250px;
+}

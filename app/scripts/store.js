@@ -87,6 +87,8 @@ export default function Store() {
       if (!data) return;
       const { type, payload } = data;
       const notifyEvents = [type];
+      // Although we have only 1 type that we call dispatch with, this is written
+      // in a way that allows handling future types as well
       switch (type) {
         case ACTION_TYPES.NEW_LOAD_DATA:
           const currentAvarageLoad = Number(payload);
