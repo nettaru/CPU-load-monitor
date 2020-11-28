@@ -10,7 +10,7 @@ export default function SocketManager (store) {
 
   // Send data to store on server messages
   webSocket.onmessage = event => {
-    store.dispatch({ type: ACTION_TYPES.NEW_LOAD_DATA, payload: event.data });
+    store.dispatch({ type: ACTION_TYPES.NEW_LOAD_DATA, payload: JSON.parse(event.data) });
   };
 
   // Close the socket before the tab is closed

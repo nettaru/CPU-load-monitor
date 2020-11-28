@@ -1,9 +1,9 @@
-import { feed } from './mock-data';
+import { data } from './mock-data';
 import Store from '../scripts/store';
 import { ACTION_TYPES } from '../scripts/config';
 
 describe('Store', () => {
-  const store = Store(feed);
+  const store = Store(data);
   it('Returns current state', () => {
     const state = store.getState();
     expect(state.hasOwnProperty('currentAvarageLoad')).toBe(true);
@@ -13,7 +13,7 @@ describe('Store', () => {
 
   it('Allows mutating state through dispatching events', () => {
     expect(store.getState().currentAvarageLoad).toBe(0);
-    store.dispatch({ type: ACTION_TYPES.NEW_LOAD_DATA, payload: 1 });
+    store.dispatch({ type: ACTION_TYPES.NEW_LOAD_DATA, payload: { value: 1, time: Date.now() } });
     expect(store.getState().currentAvarageLoad).toBe(1);
   });
 
@@ -22,7 +22,7 @@ describe('Store', () => {
     const changedValue = 'state has change!';
     const subscriber = () => { changeMe = changedValue; }
     store.subscribe(subscriber);
-    store.dispatch({ type: ACTION_TYPES.NEW_LOAD_DATA, payload: 1 });
+    store.dispatch({ type: ACTION_TYPES.NEW_LOAD_DATA, payload: { value: 1, time: Date.now() } });
     expect(changeMe).toEqual(changedValue);
   });
 });

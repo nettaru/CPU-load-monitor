@@ -31,8 +31,9 @@ function updateCPULoadEvents(cpuLoadEvents, type, now) {
   }
 }
 
-function getNextState (currentAvarageLoad, state) {
-  const now = Date.now();
+function getNextState (payload, state) {
+  const currentAvarageLoad = payload.value;
+  const now = payload.time;
   // Add current avarage data with time, remove first element of window to maintain
   // data for the past 10 minutes.
   const avarageLoad10MinWindow = [...state.avarageLoad10MinWindow, { time: now, value: currentAvarageLoad }];
@@ -91,8 +92,7 @@ export default function Store() {
       // in a way that allows handling future types as well
       switch (type) {
         case ACTION_TYPES.NEW_LOAD_DATA:
-          const currentAvarageLoad = Number(payload);
-          const nextState = getNextState(currentAvarageLoad, state);
+          const nextState = getNextState(payload, state);
 
           const isNewLoadEvent = nextState.cpuLoadEvents.events.length > state.cpuLoadEvents.events.length;
           if (isNewLoadEvent) {

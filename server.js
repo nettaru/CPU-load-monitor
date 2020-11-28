@@ -35,7 +35,10 @@ app.ws('/chat', ws => {
   const CPULoadTask = () => {
     const cpus = os.cpus().length;
     const loadAverage = os.loadavg()[0] / cpus;
-    ws.send(loadAverage);
+    ws.send(JSON.stringify({
+      value: loadAverage,
+      time: Date.now()
+    }));
   };
 
   ws.on('close', () => {
