@@ -29,14 +29,13 @@ body {
 
 h1 {
   font-size: 35px;
-  margin: 0 0 30px;
+  margin: 0;
   text-align: center;
 }
 
 .board-block {
   padding: 20px;
   text-align: center;
-  display: inline-block;
   border: 1px solid #4a4a4a;
   border-radius: 5px;
   margin: 20px;
@@ -56,16 +55,80 @@ ul {
   padding: 0;
 }
 #page {
-  padding: 30px;
-}
-
-#header {
-  margin-bottom: 30px; 
+  padding: 25px;
 }
 
 #avarage-cpu-load, #high-cpu-load-info {
   background: var(--main-color);
   box-sizing: border-box;
   color: white;
-  width: 250px;
+  min-width: 200px;
+}
+
+#grid-container {
+  display: grid;
+}
+
+@media screen and (max-width: 599px) {
+  #grid-container {
+    grid-template-columns: 100%;
+  }
+  #avarage-cpu-load {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  #high-cpu-load-info {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  #load-time-window {
+    grid-row: 3 / 4;
+    grid-column-start: 1;
+    min-width: 500px;
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 950px) {
+  #grid-container {
+    grid-template-columns: 50%;
+  }
+
+  #avarage-cpu-load {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  #high-cpu-load-info {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+
+  #load-time-window {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+  }
+}
+
+@media screen and (min-width: 951px) {
+  #grid-container {
+    grid-template-columns: 25%;
+    grid-template-rows: 50%;
+  }
+
+  #avarage-cpu-load {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  #high-cpu-load-info {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  #load-time-window {
+    grid-column: 2 / 4;
+    grid-row: 1 / 3;
+  }
 }

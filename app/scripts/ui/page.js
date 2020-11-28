@@ -19,16 +19,11 @@ export default class Page extends UIModel {
         properties: { textContent: 'Avarage CPU Load Dashboard' }
       }),
       createNestedElement({
-        attributes: { class: 'info-row' },
+        attributes: { id: 'grid-container' },
         children: [
           this.cpuAvarageLoad.render(),
           this.cpuLoadEventsInfo.render(),
-        ]
-      }),
-      createNestedElement({
-        attributes: { class: 'info-row' },
-        children: [
-          this.loadTimeWindow.render()
+          this.loadTimeWindow.render()    
         ]
       })
     ]
