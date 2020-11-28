@@ -45,10 +45,9 @@ Page is built with the following components:
 ```
 Page
   Header
-  Info-Row
+  Grid-Container
     CPU-Avarage-Load
     CPU-Load-Events-Info
-  Info-Row
     Load-Time-Window
 ```
 
