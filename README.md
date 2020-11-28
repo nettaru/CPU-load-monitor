@@ -60,6 +60,9 @@ There are definitely some improvements that can be done for a production version
 - Store state can use models in case of a more complicated data structure.
 - Store can use state reducers when maintaining a more complicated state.
 - Production stack should also minify the files.
+- Testing on non-linux environment - I only tested the application on my own machine, although I added the package `loadavg-windows` that should add support for window os.
+- Handling 'sleep' time - the application could notify the server if the app tab is not active, and then the communication between FE and BE can 'go to sleep' while data is accumelated on the server side, that will send it once the application is active again.
+- CSS Grid display on IE only has partial support with `-ms-` prefix, which I didn't use. A fallback IE CSS should be added on production.
 
 
 **Stack**
