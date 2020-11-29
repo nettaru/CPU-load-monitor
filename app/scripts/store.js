@@ -73,9 +73,9 @@ function getNextState (payload, state) {
  * Store manages the module state, in a redux-y manner.
  * Returns getState, dispatch & subscribe API
 **/
-export default function Store() {
+export default function Store(initialState) {
   const subscribtions = {};
-  let state = {
+  let state = initialState || {
     currentAvarageLoad: 0,
     avarageLoad10MinWindow: [],
     cpuLoadEvents: {

@@ -1,9 +1,8 @@
-import { data } from './mock-data';
 import Store from '../scripts/store';
 import { ACTION_TYPES } from '../scripts/config';
 
 describe('Store', () => {
-  const store = Store(data);
+  const store = Store();
   it('Returns current state', () => {
     const state = store.getState();
     expect(state.hasOwnProperty('currentAvarageLoad')).toBe(true);
