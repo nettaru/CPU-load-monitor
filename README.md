@@ -1,5 +1,6 @@
 # Info-Cat - CPU load monitor
 Implementation of a technical code challenge.
+I enjoyed this challenge a lot and got to learn & use 4 technologies I didn't get to use before - `d3js`, `WebSockets`, `NotificationAPI` & CSS `grid` display.
 
 ## The task
 Build a a browser-based CPU load monitoring application. This application will display time-series data.
