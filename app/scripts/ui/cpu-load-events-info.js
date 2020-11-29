@@ -27,8 +27,8 @@ class RecoveriesCounter extends UIModel {
     this.eventsCount = 0;
 
     store.subscribe(eventTypes => {
-      this.eventsCount++;
       if (eventTypes.includes(ACTION_TYPES.RECOVERY)) {
+        this.eventsCount++;
         this.properties.textContent = `Recoveries: ${this.eventsCount}`;
         this.replaceElement();
       }

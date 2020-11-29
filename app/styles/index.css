@@ -115,6 +115,8 @@ ul {
   #grid-container {
     grid-template-columns: 25%;
     grid-template-rows: 50%;
+    max-width: 1800px;
+    margin: 0 auto;
   }
 
   #avarage-cpu-load {

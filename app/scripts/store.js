@@ -11,7 +11,10 @@ function updateCPULoadEvents(cpuLoadEvents, type, now) {
   // Recovery can only happen after a high CPU load event.
   // If this is the first event, or the latest event was a recovery, we do not need to log
   // the events list
-  if (type === ACTION_TYPES.RECOVERY && (!lastEvent || lastEvent.type === ACTION_TYPES.RECOVERY)) {
+  if (type === ACTION_TYPES.RECOVERY &&
+      (!lastEvent || lastEvent.type === ACTION_TYPES.RECOVERY) &&
+      cpuLoadEvents.latestTrend.type !== ACTION_TYPES.RECOVERY) {
+    cpuLoadEvents.latestTrend = {};
     return;
   }
   // If no ongoing load event - let's mark a trend start:
@@ -39,7 +42,7 @@ function getNextState (payload, state) {
   const avarageLoad10MinWindow = [...state.avarageLoad10MinWindow, { time: now, value: currentAvarageLoad }];
 
   // Check if we maintain data for longer than 10 minutes, and if so - remove the first data entry
-  if ((getLast(avarageLoad10MinWindow).time - avarageLoad10MinWindow[0].time)/(10*60*1000) > 10) {
+  if ((now - avarageLoad10MinWindow[0].time)/(60*1000) > 10) {
     avarageLoad10MinWindow.shift();
   }
 
@@ -48,7 +51,7 @@ function getNextState (payload, state) {
     events: [...state.cpuLoadEvents.events],
     latestTrend: {...state.cpuLoadEvents.latestTrend}
   };
-  const eventType = currentAvarageLoad > 1 ? ACTION_TYPES.type : ACTION_TYPES.RECOVERY;
+  const eventType = currentAvarageLoad > 1 ? ACTION_TYPES.HIGH_CPU_LOAD : ACTION_TYPES.RECOVERY;
   updateCPULoadEvents(cpuLoadEvents, eventType, now);
 
   // Remove or update first CPU load event if it is already out of the documented time window

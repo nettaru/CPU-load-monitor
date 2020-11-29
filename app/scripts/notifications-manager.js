@@ -32,7 +32,7 @@ export default function NotificationsManager (store) {
 
     if (eventTypes.includes(ACTION_TYPES.HIGH_CPU_LOAD)) {
       notify('High CPU Load!', `Started ${getLatestEventLength(cpuLoadEvents.events)} minutes ago`);
-    } else if (eventTypes.includes(ACTION_TYPES.NORMAL_CPU_LOAD)) {
+    } else if (eventTypes.includes(ACTION_TYPES.RECOVERY)) {
       notify('CPU Load Recovered', `Event length was: ${getLatestEventLength(cpuLoadEvents.events)} minutes`);
     }
   });
