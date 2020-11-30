@@ -15,15 +15,15 @@ function getLatestEventLength (events) {
  */
 export default function NotificationsManager (store) {
   let notify = (title, body) => alert(`${title}\n${body}`);
-  if (window.Notfication && Notification.permission !== 'granted') {
+  if (window.Notification && Notification.permission !== 'granted') {
     Notification.requestPermission()
       .then(permission => {
-        Notification.permission = permission;
+        if(!('permission' in Notification)) { Notification.permission = permission; }
         if (permission == 'granted') {
           notify = (title, body) => { new Notification(title, { body }); }
         }
       });
-  } else if (window.Notfication && Notification.permission == 'granted') {
+  } else if (window.Notification && Notification.permission == 'granted') {
     notify = (title, body) => { new Notification(title, { body }); }
   }
 
